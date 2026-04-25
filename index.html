@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
   <title>Keuangan Bulanan</title>
@@ -9,6 +10,7 @@
       background: #f4f6f9;
       padding: 20px;
     }
+
     .container {
       max-width: 650px;
       margin: auto;
@@ -16,174 +18,134 @@
       padding: 20px;
       border-radius: 10px;
     }
-    input, select, button {
+
+    input,
+    select,
+    button {
       width: 100%;
       padding: 10px;
       margin: 5px 0;
     }
+
     button {
       background: #4CAF50;
       color: white;
       border: none;
     }
+
     .item {
       display: flex;
       justify-content: space-between;
       border-bottom: 1px solid #ddd;
       padding: 8px;
     }
-    .income { color: green; }
-    .expense { color: red; }
+
+    .income {
+      color: green;
+    }
+
+    .expense {
+      color: red;
+    }
+
     .summary {
       margin-top: 15px;
       font-weight: bold;
     }
   </style>
 </head>
+
 <body>
 
-<div class="container">
-  <h2>💰 Keuangan Bulanan</h2>
+  <div class="container">
+    <h2>💰 Keuangan Bulanan</h2>
 
-  <input type="date" id="date">
-  <input type="text" id="desc" placeholder="Deskripsi">
-  <input type="number" id="amount" placeholder="Jumlah (Rp)">
+    <input type="date" id="date">
+    <input type="text" id="desc" placeholder="Deskripsi">
+    <input type="number" id="amount" placeholder="Jumlah (Rp)">
 
-  <select id="type">
-    <option value="income">Pemasukan</option>
-    <option value="expense">Pengeluaran</option>
-  </select>
+    <select id="type">
+      <option value="income">Pemasukan</option>
+      <option value="expense">Pengeluaran</option>
+    </select>
 
-  <button onclick="addData()">Tambah</button>
+    <button onclick="addData()">Tambah</button>
 
-  <hr>
+    <hr>
 
-  <label>Filter Bulan:</label>
-  <input type="month" id="filterMonth" onchange="render()">
+    <label>Filter Bulan:</label>
+    <input type="month" id="filterMonth" onchange="render()">
 
-  <div id="list"></div>
+    <div id="list"></div>
 
-  <div class="summary">
-    Pemasukan: Rp <span id="income">0</span><br>
-    Pengeluaran: Rp <span id="expense">0</span><br>
-    Saldo: Rp <span id="balance">0</span>
+    <div class="summary">
+      Pemasukan: Rp <span id="income">0</span><br>
+      Pengeluaran: Rp <span id="expense">0</span><br>
+      Saldo: Rp <span id="balance">0</span>
+    </div>
   </div>
-</div>
 
-<script>
-  let data = JSON.parse(localStorage.getItem("keuangan")) || [];
+  <script>
+    let data = JSON.parse(localStorage.getItem("keuangan")) || [];
 
-  function save() {
-    localStorage.setItem("keuangan", JSON.stringify(data));
-  }
-
-  function addData() {
-    const date = document.getElementById("date").value;
-    const desc = document.getElementById("desc").value;
-    const amount = parseInt(document.getElementById("amount").value);
-    const type = document.getElementById("type").value;
-
-    if (!date || !desc || !amount) {
-      alert("Lengkapi data!");
-      return;
+    function save() {
+      localStorage.setItem("keuangan", JSON.stringify(data));
     }
 
-    data.push({ date, desc, amount, type });
-    save();
-    render();
+    function addData() {
+      const date = document.getElementById("date").value;
+      const desc = document.getElementById("desc").value;
+      const amount = parseInt(document.getElementById("amount").value);
+      const type = document.getElementById("type").value;
 
-    document.getElementById("date").value = "";
-    document.getElementById("desc").value = "";
-    document.getElementById("amount").value = "";
-  }
+      if (!date || !desc || !amount) {
+        alert("Lengkapi data!");
+        return;
+      }
 
-  function render() {
-    const list = document.getElementById("list");
-    const filter = document.getElementById("filterMonth").value;
+      data.push({ date, desc, amount, type });
+      save();
+      render();
 
-    list.innerHTML = "";
+      document.getElementById("date").value = "";
+      document.getElementById("desc").value = "";
+      document.getElementById("amount").value = "";
+    }
 
-    let income = 0;
-    let expense = 0;
+    function render() {
+      const list = document.getElementById("list");
+      const filter = document.getElementById("filterMonth").value;
 
-    data.forEach(item => {
-      if (filter && !item.date.startsWith(filter)) return;
+      list.innerHTML = "";
 
-      const div = document.createElement("div");
-      div.className = "item";
+      let income = 0;
+      let expense = 0;
 
-      div.innerHTML = `
+      data.forEach(item => {
+        if (filter && !item.date.startsWith(filter)) return;
+
+        const div = document.createElement("div");
+        div.className = "item";
+
+        div.innerHTML = `
         <span>${item.date} - ${item.desc}</span>
         <span class="${item.type}">
           ${item.type === "income" ? "+" : "-"} Rp ${item.amount}
         </span>
       `;
 
-      list.appendChild(div);
+        list.appendChild(div);
 
-      if (item.type === "income") income += item.amount;
-      else expense += item.amount;
-    });
+        if (item.type === "income") income += item.amount;
+        else expense += item.amount;
+      });
 
-    document.getElementById("income").innerText = income;
-    document.getElementById("expense").innerText = expense;
-    document.getElementById("balance").innerText = income - expense;
-  }
+      document.getElementById("income").innerText = income;
+      document.getElementById("expense").innerText = expense;
+      document.getElementById("balance").innerText = income - expense;
+    }
 
-  render();
-</script>
-
+    render();
+  </script>
 </body>
-<<<<<<< HEAD
-<<<<<<< HEAD:ManagementKeuangan.html
 </html>
-=======
-=======
-=======
-
->>>>>>> e93c7e6a2d235b42683b1538ab400506bff9e264
-<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="UTF-8">
-  <title>Keuangan Bulanan</title>
-  <style>
-    body {
-      font-family: Arial;
-      background: #f4f6f9;
-      padding: 20px;
-    }
-    .container {
-      max-width: 650px;
-      margin: auto;
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-    }
-    input, select, button {
-      width: 100%;
-      padding: 10px;
-      margin: 5px 0;
-    }
-    button {
-      background: #4CAF50;
-      color: white;
-      border: none;
-    }
-    .item {
-      display: flex;
-      justify-content: space-between;
-      border-bottom: 1px solid #ddd;
-      padding: 8px;
-    }
-    .income { color: green; }
-    .expense { color: red; }
-    .summary {
-      margin-top: 15px;
-      font-weight: bold;
-    }
-  </style>
-</head>
-<body>
-
->>>>>>> 2566cfb8e460f0ebada113fcb2d6ae980ccb8ea3:index.html
